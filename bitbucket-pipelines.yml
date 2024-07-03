@@ -1,0 +1,33 @@
+pipelines:
+  pull-requests:
+    '**':
+      - step:
+          name: Build, Test & Lint
+          image: node:18.18
+          script:
+            - npm install
+            - npm test
+            - npm run lint:fix
+          caches:
+            - node
+  branches:
+    master:
+      - step:
+          name: Build, Test & Lint
+          image: node:18.18
+          script:
+            - npm install
+            - npm test
+            - npm run lint:fix
+          caches:
+            - node
+      - step:
+          name: Deploy to VM
+          deployment: production
+          script:
+            - pipe: atlassian/ssh-run:0.7.0
+              variables:
+                SSH_USER: 'root'
+                SERVER: $HOST_ADDRESS
+                PORT: $HOST_PORT
+                COMMAND: "~/$BITBUCKET_REPO_SLUG/deploy.sh $DB_CONNECTION_STRING $PATH_API_HOST $USER_MANAGEMENT_API_HOST $AUTH0_AUDIENCE $AUTH0_DOMAIN"
