@@ -10,10 +10,6 @@ In this module there we have the backend of the:
 
 We follow the ONION architecture.
 
-Here is a link for the project documentation:
-(https://bitbucket.org/guilhermesousa03/rdg-data-administration-module/wiki/Home)[Documentation]
-
-
 ## Development
 
 ---
